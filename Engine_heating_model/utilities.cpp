@@ -1,4 +1,5 @@
 #include "utilities.h"
+#include <cctype>
 
 int gaussian(std::vector<std::vector<double>> a, std::vector<double>& ans) {
 	int n = (int)a.size();
@@ -46,25 +47,4 @@ int gaussian(std::vector<std::vector<double>> a, std::vector<double>& ans) {
 		if (where[i] == -1)
 			return -1;
 	return EXIT_SUCCESS;
-}
-
-bool is_float_number(const std::string& string) {
-	std::string::const_iterator it = string.begin();
-	bool decimalPoint = false;
-	int minSize = 0;
-	if (string.size() > 0 && (string[0] == '-' || string[0] == '+')) {
-		it++;
-		minSize++;
-	}
-	while (it != string.end()) {
-		if (*it == '.') {
-			if (!decimalPoint) decimalPoint = true;
-			else break;
-		}
-		else if (!isdigit(*it) && ((*it != 'f') || it + 1 != string.end() || !decimalPoint)) {
-			break;
-		}
-		++it;
-	}
-	return string.size() > minSize && it == string.end();
 }

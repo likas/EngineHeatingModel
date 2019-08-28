@@ -6,6 +6,5 @@
 using namespace std;
 
 int gaussian(std::vector<std::vector<double>> a, std::vector<double>& ans);
-bool is_float_number(const std::string& string);
 
 #endif
