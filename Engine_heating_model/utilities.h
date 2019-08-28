@@ -1,18 +1,11 @@
-//#pragma once
-#ifndef _VECTOR_INCLUDE
+#ifndef _UTILITIES_H_
+#define _UTILITIES_H_
 #include <vector>
-#define _VECTOR_INCLUDE
-#endif
-#include <utility>
 #include <iostream>
 
-class piesewise_linear_function { //интервальная линейная функция. имеет вид y = kx + b, y э 
-public:
-	double k;
-	double b;
-	int x1;
-	int x2; //y это M, x это V
-	void print(){
-		std::cout << "M = " << k << "V + " << b << ", V in [" << x1 << "][" << x2 << "]" << std::endl;
-	}
-};
+using namespace std;
+
+int gaussian(std::vector<std::vector<double>> a, std::vector<double>& ans);
+bool is_float_number(const std::string& string);
+
+#endif

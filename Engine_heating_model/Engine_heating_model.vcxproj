@@ -124,14 +124,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="test_stand.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.txt" />
+    <Text Include="input.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test_stand.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
