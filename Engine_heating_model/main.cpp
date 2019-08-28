@@ -7,6 +7,7 @@
 
 #include "utilities.h"
 #include "engine.h"
+#include "world.h"
 
 #include "json.hpp"
 using json = nlohmann::json;
@@ -46,7 +47,7 @@ int main(int args, char *argv[]) {
 		if (C < 0) throw "C must be positive";
 		if (eps < 0) throw "Epsilon must be positive";
 
-		if ( M.size() != V.size() && M.size() != 0 && V.size() != 0 ) throw ("M and V sizes must be equal and greater than 1"); //check sizes
+		if (M.size() != V.size() && M.size() != 0 && V.size() != 0) throw ("M and V sizes must be equal and greater than 1"); //check sizes
 
 		for (auto i : M) {
 			if (i < 0) throw ((char)i + " element of M array is negative; should be equal to zero or greater");
@@ -65,23 +66,35 @@ int main(int args, char *argv[]) {
 			}
 		}
 
-		//------------- пользовательский ввод -------------
+		//-------------------------- пользовательский ввод ---------------
 
 		string user_input = "";
 		cin >> user_input;
+
+		//------------- error handling пользовательского ввода -----------
 		std::string::size_type sz;
 		try {
 			T_environment = stof(user_input, &sz);
 		}
 		catch (const std::invalid_argument& ia) {
 			std::cerr << "Invalid argument: " << ia.what() << '\n';
-			std::cerr << "Incorrect input : environment temperature should be integer or float";
-			return EXIT_FAILURE;
+			throw "Incorrect input : environment temperature should be integer or float";
+			//return EXIT_FAILURE;
 		}
 
 		if (is_null_pointer<decltype(sz)>::value) {
 			throw "Incorrect input: environment temperature should be integer or float";
 		}
+
+		if (T_environment > T_overheat) {
+			std::stringstream exception;
+			exception << "Overheat temp. (" << T_overheat << ") is less than the environment temp. (" << T_environment << "). Looks like the engine is already overheated!" << endl;
+			throw exception.str();
+		}
+		//------ hello world, I created you -------
+
+		world& world1 = world::instance();
+		world1.set_env_T(T_environment);
 		
 		Engine_internal_combustion engine(I, T_environment, Hm, Hv, C, M, V);
 		cout << "T = " << engine.getT(T_environment) << endl; 

@@ -15,11 +15,15 @@ protected:
 	double T_current_engine;
 	double Vh;
 	double Vc;
+public:
+	virtual void step() = 0;
 };
 
 class Engine_internal_combustion : public Engine {
 protected:
-	double getVc(double T_env) {
+	double getVc() {
+		world& world1 = world::instance();
+		double T_env = world1.get_env_T();
 		return C * (T_env - T_current_engine);
 	}
 	double getVi() {
@@ -59,11 +63,11 @@ private:
 	std::vector<piesewise_linear_function> intervals;
 public:
 	//конструктор
-	Engine_internal_combustion(double i, double t_cur, double hm, double hv, double c, std::vector<double> M, std::vector<double> V):Hm(hm), Hv(hv), C(c), Vi(0), Mi(0) {
+	Engine_internal_combustion(double i, double t_cur, double hm, double hv, double c, std::vector<double> M, std::vector<double> V) :Hm(hm), Hv(hv), C(c), Vi(0), Mi(0) {
 		I = i;
 		T_current_engine = t_cur;
 
-		/*кусочно-линейная функция описывается как 
+		/*кусочно-линейная функция описывается как
 											y(x) =  k1 * x + b1, x in [a1, a2}
 													k2 * x + b2, x in [a2, a3}
 													...
@@ -88,19 +92,22 @@ public:
 				throw exception.str();
 			}
 		}
-		
+
 	}
 
 	//методы
-	
-	double getT(double t_env) {
-		Vc = getVc(t_env);
+
+	void step() override {
+		Vc = getVc();
 		Vh = getVh();
 		double deltaT = Vc + Vh;
 		T_current_engine += deltaT;
-		return T_current_engine;
+		//return T_current_engine;
 	}
 
+	double getT() {
+		return T_current_engine;
+	}
 
 };
 
