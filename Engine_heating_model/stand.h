@@ -4,11 +4,11 @@
 #include "engine.h"
 #include <cmath>
 
-//абстрактный класс Stand и его наследник Stand_heating_stand
+//класс Stand и его наследник Stand_heating_stand
 class Stand {
 protected:
-	int time; //время симуляции
-	void step(Engine* e);
+	int time;				//время симуляции
+	void step(Engine* e);	//на каждом шаге значение температуры изменяется в соответствии со внутренним состоянием объекта
 };
 
 class Stand_heating_stand : public Stand {

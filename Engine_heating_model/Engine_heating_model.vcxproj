@@ -124,20 +124,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="input.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="world.cpp" />
     <ClCompile Include="stand.cpp" />
     <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="engine.h" />
     <ClInclude Include="world.h" />
     <ClInclude Include="stand.h" />
-    <ClInclude Include="json.hpp" />
     <ClInclude Include="utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

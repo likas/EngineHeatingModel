@@ -1,7 +1,7 @@
 #ifndef _WORLD_H_
 #define _WORLD_H_
 
-// Привет, Мир! В этом классе-синглтоне находится "глобальный" параметр "Температура окружающей среды". Возможно, следовало ограничиться комнатой.
+// В этом классе-синглтоне находится "глобальный" параметр "Температура окружающей среды".
 class world
 {
 public:
@@ -19,7 +19,6 @@ public:
 private:
 	double T_environment;
 	world() :T_environment(0) {}
-	//world(double t) :T_environment(t) {}
 	world(const world&) = delete;
 	world& operator=(const world&) = delete;
 };

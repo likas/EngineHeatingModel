@@ -4,15 +4,18 @@ void Engine_internal_combustion::piesewise_linear_function::print() {
 	std::cout << "M = " << k << "V + " << b << ", V in [" << a1 << "][" << a2 << "]" << std::endl;
 }
 
-Engine_internal_combustion::Engine_internal_combustion(double i, double t_cur, double hm, double hv, double c, std::vector<double> M, std::vector<double> V) :Hm(hm), Hv(hv), C(c), Vi(0), Mi(0) {
+Engine_internal_combustion::Engine_internal_combustion(double i, double hm, double hv, double c, std::vector<double> M, std::vector<double> V) :Hm(hm), Hv(hv), C(c), Vi(0), Mi(0) {
 	I = i;
-	T_current_engine = t_cur;
+
+	// получить введённую пользователем температуру из синглтона Мир
+	world& world1 = world::instance();
+	T_current_engine = world1.get_env_T();
 
 	/*кусочно-линейная функция описывается как
 										y(x) =  k1 * x + b1, x in [a1, a2}
 												k2 * x + b2, x in [a2, a3}
 												...
-												ki * x + bi, x in [ai, ai+1]
+												ki * x + bi, x in [ai, ai+1}
 	так как на входе имеем значения в точках, вычислим коэффициенты k и b, характеризующие линейную функцию. Для этого решим СЛАУ (методом Гаусса-Жордана):
 	*/
 	std::vector < std::vector <double >> matrix;
@@ -25,7 +28,6 @@ Engine_internal_combustion::Engine_internal_combustion(double i, double t_cur, d
 		if (gaussian(matrix, answer) == 0) {
 			temp_interval.k = answer[0]; temp_interval.b = answer[1];
 			intervals.push_back(temp_interval);
-			intervals[i].print(); //d
 		}
 		else {
 			std::stringstream exception;
@@ -41,8 +43,6 @@ void Engine_internal_combustion::step() {
 	Vh = getVh();
 	double deltaT = Vc + Vh;
 	T_current_engine += deltaT;
-	cout << "Engine thinks its temp is " << T_current_engine << endl;
-	//return T_current_engine;
 }
 
 double Engine_internal_combustion::getT() {
@@ -52,7 +52,6 @@ double Engine_internal_combustion::getT() {
 double Engine_internal_combustion::getVc() {
 	world& world1 = world::instance();
 	double T_env = world1.get_env_T();
-	cout << "Vc = " << C << " * " << T_env << " - " << T_current_engine << endl;
 	return C * (T_env - T_current_engine);
 }
 
@@ -61,18 +60,19 @@ double Engine_internal_combustion::getVi() {
 }
 
 double Engine_internal_combustion::getVh() {
-	//--------- рассчитать скорость на этом шаге ----------
+
+	//----------------------- рассчитать скорость на этом шаге ------------------------
 	Vi = getVi();
-	//-------- выяснить интервал, к которому принадлежит Vi ---------
+
+	//----------------- выяснить интервал, к которому принадлежит Vi ------------------
 	short i = 0;
 	for (size_t length = intervals.size(); i < length; ++i) {
-		if (Vi < intervals[i].a2) break;
+		if (Vi >= intervals[i].a1 && Vi < intervals[i].a2) break;
 	}
 
 	//------ подставить k и b для найденного интервала в уравнение M = kV + b ---------
-
 	Mi = intervals[i].k * Vi + intervals[i].b;
-	cout << "Vh = " << Mi << " * " << Hm << " + " << (Vi * Vi) << " * " << Hv << endl;
+
 	//посчитать Vh = M * Hm + V^2 * Hv
 	return Mi * Hm + (Vi * Vi) * Hv;
 }

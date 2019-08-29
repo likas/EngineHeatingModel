@@ -5,10 +5,6 @@ int gaussian(std::vector<std::vector<double>> a, std::vector<double>& ans) {
 	int m = (int)a[0].size() - 1;
 	double eps = 0.000001;
 
-	/*cout << "in gaussian:" << endl;
-	cout << a[0][0] << " " << a[0][1] << endl;
-	cout << a[1][0] << " " << a[1][1] << endl;*/
-
 	std::vector<int> where(m, -1);
 	for (int col = 0, row = 0; col < m && row < n; ++col) {
 		int sel = row;

@@ -41,10 +41,8 @@ protected:
 	double getVi();
 	double getVh();
 public:
-	//конструктор
-	Engine_internal_combustion(double i, double t_cur, double hm, double hv, double c, std::vector<double> M, std::vector<double> V);
+	Engine_internal_combustion(double i, double hm, double hv, double c, std::vector<double> M, std::vector<double> V);
 
-	//методы
 	void step();
 	double getT();
 

@@ -16,8 +16,6 @@ int Stand_heating_stand::test(Engine* e) {
 			throw exception.str();
 		}
 		T_cur = e->getT();
-		//cout << "Temp. now: " << T_cur << endl;
-		//cout << "Delta T now: " << delta_T << endl;
 	}
 	return time;
 }
