@@ -10,9 +10,6 @@
 #include "world.h"
 #include "stand.h"
 
-/*#include "json.hpp"
-using json = nlohmann::json;*/
-
 using namespace std;
 
 int main(int args, char *argv[]) {
@@ -36,22 +33,23 @@ int main(int args, char *argv[]) {
 		Hv = 0.0001;
 		C = 0.1;
 		eps = 0.00001;
-		//---------- с клавиатуры ------------ //TODO проверить, не меньше ли текущая температура чем перегрева
+		//---------- с клавиатуры ------------ 
 		double T_environment = 0;
-		//T_environment = 13;
 
 		//--------------- мини-валидация -------------------
 
-		if (I < 0) throw "I must be positive";
+		
 		if (Hm < 0) throw "Hm must be positive";
 		if (Hv < 0) throw "Hv must be positive";
 		if (C < 0) throw "C must be positive";
+
+		if (I < 0) throw "I must be positive";
 		if (eps < 0) throw "Epsilon must be positive";
 
 		if (M.size() != V.size() && M.size() != 0 && V.size() != 0) throw ("M and V sizes must be equal and greater than 1"); //check sizes
 
 		for (auto i : M) {
-			if (i < 0) throw ((char)i + " element of M array is negative; should be equal to zero or greater");
+			if (i < 0) throw ((char)i + " element of M array is negative; must be equal to zero or greater");
 		}
 
 		for (auto i : V) {
@@ -99,11 +97,9 @@ int main(int args, char *argv[]) {
 		
 		Engine_internal_combustion engine1(I, T_environment, Hm, Hv, C, M, V);
 		Stand_heating_stand stand1(eps, T_overheat);
-		cout << "T = " << stand1.test(&engine1) << endl;
-
-		//cout << "T = " << engine.getT(T_environment) << endl; 
+		cout << "Overheat took " << stand1.test(&engine1) << " sec." << endl;
 		
-		std::cout << "End of program" << std::endl;
+		std::cout << "The End" << std::endl;
 		return EXIT_SUCCESS;
 	}
 	catch(string exception){

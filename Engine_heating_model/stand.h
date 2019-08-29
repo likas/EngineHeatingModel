@@ -1,12 +1,14 @@
+#ifndef _STAND_H_
+#define _STAND_H_
+
 #include "engine.h"
 #include <cmath>
 
+//абстрактный класс Stand и его наследник Stand_heating_stand
 class Stand {
-	int time;
-public:
-	void step(Engine* e) {
-		e->step();
-	}
+protected:
+	int time; //время симуляции
+	void step(Engine* e);
 };
 
 class Stand_heating_stand : public Stand {
@@ -14,22 +16,9 @@ private:
 	double epsilon;
 	double T_overheat;
 	double T_cur;
-	double T_prev;
 public:
-	Stand_heating_stand(double eps, double overheat) :epsilon(eps), T_overheat(overheat), T_cur(0), T_prev(0) {};
-	int test(Engine* e) {
-		T_cur = e->getT();
-		float delta_T = T_cur;
-		int t = 0;
-		for (; T_cur < T_overheat && delta_T > epsilon; ++t) {
-			T_prev = T_cur;
-			step(e);
-			T_cur = e->getT();
-			//cout << 
-			cout << "Temp. now: " << T_cur << endl;
-			delta_T = abs(T_prev - T_cur);
-			cout << "Delta T now: " << delta_T << endl;
-		}
-		return t;
-	}
+	Stand_heating_stand(double eps, double overheat) :epsilon(eps), T_overheat(overheat), T_cur(0) {};
+	int test(Engine* e);
 };
+
+#endif // _STAND_H_

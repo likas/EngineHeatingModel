@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="engine.cpp" />
     <ClCompile Include="world.cpp" />
     <ClCompile Include="stand.cpp" />
     <ClCompile Include="utilities.cpp" />

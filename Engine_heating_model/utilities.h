@@ -2,9 +2,10 @@
 #define _UTILITIES_H_
 #include <vector>
 #include <iostream>
+#include <cctype>
 
 using namespace std;
 
 int gaussian(std::vector<std::vector<double>> a, std::vector<double>& ans);
 
-#endif
+#endif // _UTILITIES_H_
