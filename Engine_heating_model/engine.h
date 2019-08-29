@@ -4,8 +4,8 @@
 #include <iostream>
 #include "utilities.h"
 #include <sstream>
-//#include <utility>
 #include <algorithm>
+#include "world.h"
 
 int gaussian(std::vector<std::vector<double>>, std::vector<double>&);
 
@@ -17,6 +17,7 @@ protected:
 	double Vc;
 public:
 	virtual void step() = 0;
+	virtual double getT() = 0;
 };
 
 class Engine_internal_combustion : public Engine {
@@ -24,13 +25,14 @@ protected:
 	double getVc() {
 		world& world1 = world::instance();
 		double T_env = world1.get_env_T();
+		cout << "Vc = " << C << " * " << T_env << " - " << T_current_engine << endl;
 		return C * (T_env - T_current_engine);
 	}
 	double getVi() {
 		return min(300.0, Vi + (Mi / I));
 	}
 	double getVh() {
-
+		Vi = getVi();
 		//-------- выяснить интервал, к которому принадлежит Vi ---------
 		short i = 0;
 		for (size_t length = intervals.size(); i < length; ++i) {
@@ -40,7 +42,7 @@ protected:
 		//------ подставить k и b для найденного интервала в уравнение M = kV + b ---------
 
 		Mi = intervals[i].k * Vi + intervals[i].b;
-
+		cout << "Vh = " << Mi << " * " << Hm << " + " << (Vi * Vi) << " * " << Hv << endl;
 		//посчитать Vh = M * Hm + V^2 * Hv
 		return Mi * Hm + (Vi * Vi) * Hv;
 	}
@@ -102,6 +104,7 @@ public:
 		Vh = getVh();
 		double deltaT = Vc + Vh;
 		T_current_engine += deltaT;
+		cout << "Engine thinks its temp is " << T_current_engine << endl;
 		//return T_current_engine;
 	}
 

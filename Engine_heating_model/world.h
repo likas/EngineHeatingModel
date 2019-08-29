@@ -1,3 +1,6 @@
+#ifndef _WORLD_H_
+#define _WORLD_H_
+
 class world
 {
 public:
@@ -9,7 +12,7 @@ public:
 	double get_env_T() {
 		return T_environment;
 	}
-	bool set_env_T(double t) {
+	void set_env_T(double t) {
 		T_environment = t;
 	}
 private:
@@ -19,3 +22,5 @@ private:
 	world(const world& root) = delete;
 	world& operator=(const world&) = delete;
 };
+
+#endif

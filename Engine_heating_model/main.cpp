@@ -8,9 +8,10 @@
 #include "utilities.h"
 #include "engine.h"
 #include "world.h"
+#include "stand.h"
 
-#include "json.hpp"
-using json = nlohmann::json;
+/*#include "json.hpp"
+using json = nlohmann::json;*/
 
 using namespace std;
 
@@ -96,8 +97,11 @@ int main(int args, char *argv[]) {
 		world& world1 = world::instance();
 		world1.set_env_T(T_environment);
 		
-		Engine_internal_combustion engine(I, T_environment, Hm, Hv, C, M, V);
-		cout << "T = " << engine.getT(T_environment) << endl; 
+		Engine_internal_combustion engine1(I, T_environment, Hm, Hv, C, M, V);
+		Stand_heating_stand stand1(eps, T_overheat);
+		cout << "T = " << stand1.test(&engine1) << endl;
+
+		//cout << "T = " << engine.getT(T_environment) << endl; 
 		
 		std::cout << "End of program" << std::endl;
 		return EXIT_SUCCESS;
